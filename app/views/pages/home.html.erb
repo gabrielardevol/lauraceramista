@@ -1,4 +1,27 @@
-  <% gridMargin = 10 %>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+</style>
+
+<style>
+#pots-layout {
+  margin-left: 20vw;
+  width: 80vw;
+  gap: 13.3vw;
+}
+.main-pot-image {
+  max-height: 25vh; max-width: 6vw;
+}
+@media (max-width: 900px) {
+
+  #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
+  .main-pot-image {max-height: 25vh; max-width: 8vw;}
+}
+</style>
+
+
 
 
   <% projects = [
@@ -23,19 +46,43 @@
     {
     name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
   },
-
+    {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+    {
+    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
+  },
+ {
+    name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
+  },
+  {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+  {
+    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
+  },
   ] %>
 
 
 
 
-<body style="margin: 0; overflow-x: hidden">
-  <div style="position: relative; display: grid; grid-template-columns: 1fr 3fr;">
+<body style="margin: 0; overflow-x: hidden; font-family: PT Mono">
+  <div style="position: relative">
+    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
+    <p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
+  </div>
 
-  <h1>Laura Elias, ceramista</h1>
 
 
-  <div style="display: flex; gap: <%=gridMargin%>vw; flex-wrap: wrap; background-color: transparent; width: 70vw; margin-top: <%=gridMargin / 2%>vw;">
+  <div class="backdrop" style="position: absolute; z-index: 4">
+    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
+    <div style="width: 80vw; position: absolute; left: 20vw; height: 50vh; background-color: whitesmoke"></div>
+  </div>
+  <div class = "backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100vw; height: 100vh; z-index: 3"></div>
+  <div class = "backdrop" id="backdrop-background" style="position: absolute; background-color: white; opacity: 0.7; width: 100vw; height: 100vh; z-index: 3"></div>
+
+
+  <div id="pots-layout" style=" display: flex; flex-wrap: wrap; background-color: transparent; ">
 
 
     <%projects.each do |project|%>
@@ -43,10 +90,12 @@
 
     <div style="background-color: transparent; width: 10vw; height: 10vw; position: relative; ">
       <div style="position: absolute; z-index: 2; display: grid">
-        <%= image_tag(project[:homepage_images][0], style: "max-height: 25vh; max-width: 6vw; margin: auto")%>
+
+
+        <%= image_tag(project[:homepage_images][0], class: "main-pot-image", style: " margin: auto")%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
           <div style="   background-color: white; position: absolute; color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
-          <div style="   background-color: transparent; position: relative; text-align: center"><%=project[:name]%></div>
+          <a class="project-button" style="background-color: transparent; position: relative; text-align: center; font-size: 0.9em"><%=project[:name]%></a>
         </div>
       </div>
 
@@ -60,7 +109,45 @@
 
    </div>
 
-  <img src="<%= asset_path 'laura_somrient.png' %>" alt="Description of Image" style="width: 25vw; position: fixed; bottom: 0;">
+  <img src="<%= asset_path 'laura_somrient.png' %>" alt="Description of Image" style="width: 20vw; position: fixed; bottom: 0;">
 
 </div>
+
 </body>
+
+<script>
+backDrop = document.querySelectorAll(".backdrop")
+
+for (var i = 0; i < backDrop.length; i++) {
+    backDrop[i].style.display = "none";
+}
+</script>
+
+
+<script>
+backDrop = document.querySelectorAll(".backdrop")
+function viewBackDrop() {
+  for (var i = 0; i < backDrop.length; i++) {
+    backDrop[i].style.display = "block";
+}
+}
+
+projectButtons = document.querySelectorAll(".project-button")
+for (var i = 0; i < projectButtons.length; i++) {
+  projectButtons[i].addEventListener('click', viewBackDrop)
+
+}
+</script>
+
+<script>
+
+backDrop = document.querySelectorAll(".backdrop")
+backgroundBackdrop = document.querySelector("#backdrop-background")
+function hydeBackDrop() {
+  for (var i = 0; i < backDrop.length; i++) {
+    backDrop[i].style.display = "none";
+}
+}
+backgroundBackdrop.addEventListener('click', hydeBackDrop)
+
+</script>
