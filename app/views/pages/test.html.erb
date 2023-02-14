@@ -1,50 +1,117 @@
 <style>
-.image-container { /*l'estil ha d'anar inserit en l'html*/
- /*s'ha d'insertar la url amb javascript o ruby*/
-box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
-border: 1px solid white;
- /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
- /*s'ha de calcular en javascript*/
-}</style>
+#pots-layout {
+  margin-left: 20vw;
+  width: 80vw;
+  gap: 13.3vw;
+}
+.main-pot-image, .secondary-pot-image {
+  max-height: 16vh; max-width: 8vw;
+}
 
-<div class="image-container"
-  style="background: url(https://via.placeholder.com/600x450) left top no-repeat;
-  width: <%=600/16%>em;
-  height: <%=450/16%>em;
-"></div>
+.secondary-pot-image-container {
+  position: absolute;
 
-<div style="display: flex">
-<%3.times do%>
-<div class="image-container"
-  style="background: url(https://via.placeholder.com/100x100) left top no-repeat;
-  width: <%=100/16%>em;
-  height: <%=100/16%>em;
-"></div>
-<% end %>
+}
+
+.secondary-pot-image {
+  max-height: 25vh; max-width: 6vw; margin: auto; opacity: 1
+}
+
+.backdrop {
+  display: none
+}
+
+@media (max-width: 900px) {
+
+  #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
+  .main-pot-image {max-height: 25vh; max-width: 8vw;}
+}
+
+@media (max-width: 1000px) {
+
+}
+
+</style>
+
+
+
+  <%  def dir_to_array(string, prefix = "")
+        array = []
+        Dir.foreach(string) do |filename|
+          next if filename == '.' or filename == '..'
+          array << prefix + filename
+        end
+        return array.reverse
+      end
+  %>
+
+  <% projects = [
+  {name: "Projecte", directory: "app/assets/images/3/tr", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
+
+  {
+    name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
+  },
+  {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+  {
+    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
+  },
+    {
+    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
+  },
+  {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+  {
+    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
+  },
+    {
+    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
+  },
+    {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+    {
+    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
+  },
+ {
+    name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
+  },
+  {
+    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
+  },
+  {
+    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
+  },
+  ] %>
+
+<div style="position: absolute">
+
+  <div style="position: relative">
+    <%= image_tag(projects[0][:homepage_images][0], style:"position: absolute; z-index: 1" , class: "main-pot-image target", "data-images": projects[0][:homepage_images], "data-index": 0)%>
+
+      <div class="secondary-pot-image-container" id= "container-target" style="display: flex" >
+
+      </div>
+  </div>
+
+
 </div>
 
+<script>
+const target = document.querySelector(".target")
+const container = document.querySelector("#container-target")
+target.addEventListener("click", () => {console.log(target.dataset.images.split(" ").length);
+  var element = container.appendChild(document.createElement("img"));
+  element.src = "https://via.placeholder.com/150";
+  element.style.position = "absolute";
+  element.style.zIndex = 0
+  element.style.top = (Math.floor(Math.random() * 21) - 10) + "em";
+    element.style.left = (Math.floor(Math.random() * 21) - 10) + "em";
 
-<style>
-.image-container { /*l'estil ha d'anar inserit en l'html*/
- /*s'ha d'insertar la url amb javascript o ruby*/
-box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
-border: 1px solid white;
- /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
- /*s'ha de calcular en javascript*/
-}</style>
+  // element.innerHTML = '<img src="https://via.placeholder.com/150" >'
 
-<div class="image-container"
-  style="background: url(https://via.placeholder.com/600x450) left top no-repeat;
-  width: <%=600/16%>em;
-  height: <%=450/16%>em;
-"></div>
 
-<div style="display: flex">
-<%3.times do%>
-<div class="image-container"
-  style="background: url(https://via.placeholder.com/100x100) left top no-repeat;
-  min-width: 100px;
-  min-height: 100px;
-"></div>
-<% end %>
-</div>
+})
+</script>

@@ -11,15 +11,22 @@
   width: 80vw;
   gap: 13.3vw;
 }
-.main-pot-image {
-  max-height: 22vh; max-width: 5vw;
+.main-pot-image, .secondary-pot-image {
+  max-height: 16vh; max-width: 8vw;
+}
+
+.secondary-pot-image-container {
+  position: absolute;
+
+}
+
+.secondary-pot-image {
+  max-height: 25vh; max-width: 6vw; margin: auto; opacity: 1
 }
 
 .backdrop {
   display: none
 }
-
-/* .backdrop {overflow: hidden} */
 
 @media (max-width: 900px) {
 
@@ -43,7 +50,21 @@
   }</style>
 
 
+
+
+  <%  def dir_to_array(string, prefix = "")
+        array = []
+        Dir.foreach(string) do |filename|
+          next if filename == '.' or filename == '..'
+          array << prefix + filename
+        end
+        return array.reverse
+      end
+  %>
+
   <% projects = [
+  {name: "Projecte", directory: "app/assets/images/3/tr", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
+
   {
     name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
   },
@@ -82,58 +103,76 @@
   },
   ] %>
 
+<div style="position: absolute">
 
-
-
-<body style="margin: 0; font-family: PT Mono; overflow: hidden">
   <div style="position: relative">
-    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
+    <%= image_tag(projects[0][:homepage_images][0], class: "main-pot-image target", "data-images": projects[0][:homepage_images], "data-index": 0, style: "position: absolute; z-index: 1")%>
+
+      <div class="secondary-pot-image-container" id= "container-target" style="position: absolute; top: 10vw" >
+        <%= image_tag(projects[0][:homepage_images][0], class: "secondary-pot-image", style: "top: 6vw; right: -10vw; position: absolute")%>
+        <%= image_tag(projects[0][:homepage_images][0], class: "secondary-pot-image", style: "top: 12vw; right: -8vw; position: absolute")%>
+      </div>
+  </div>
+
+
+</div>
+
+<script>
+const target = document.querySelector(".target")
+const container = document.querySelector("#container-target")
+target.addEventListener("click", () => {console.log(target.dataset.images.split(" ").length);
+  var element = container.appendChild(document.createElement("div"));
+  element.style.display = "flex"
+  element.innerHTML = '<img src="https://via.placeholder.com/150" style= "position: absolute; z-index: 0 ">'
+
+
+})
+</script>
+
+
+
+<div style="margin: 0; font-family: PT Mono; overflow: hidden; display: none">
+  <div style="position: relative">
+    <div style="min-width: 15em; position: fixed; z-index: 3; margin-top: 20vh"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
     <p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
   </div>
 
-
-
   <div class="backdrop" style="position: absolute; z-index: 4">
     <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw; position: fixed; top: 0px;">Laura Elias</h1></div>
-    <div style="">
-      <div style="position: absolute; height: 100vh; background-color: transparent"></div>
+      <div style="">
 
-      <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh">
+        <div style="position: absolute; height: 100vh; background-color: transparent"></div>
 
-        <div style = "height: fit-content; width: 45vw; margin: 0 0 0 10vh">
-          <h2>Aqui va el títol del projecte</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
+        <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh">
 
-        <div style="width: 50vw">
-          <div style="width: fit-content; margin: auto; flex-wrap: wrap">
-            <div class="image-container"
-              style="background: url(https://via.placeholder.com/1200x900) left top no-repeat; background-position: center;
-              height: 32vw;
-              width: 32vw;
-            "></div>
+          <div style = "height: fit-content; width: 45vw; margin: 0 0 0 10vh">
+            <h2>Aqui va el títol del projecte</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          </div>
+
+          <div style="width: 50vw">
+            <div style="width: fit-content; margin: auto; flex-wrap: wrap">
+              <div class="image-container"
+                style="background: url(https://via.placeholder.com/1200x900) left top no-repeat; background-position: center;
+                height: 32vw;
+                width: 32vw;">
+              </div>
 
             <div style="display: flex">
-            <%6.times do%>
-            <div class="image-container"
-              style="background: url(https://via.placeholder.com/100x100) left top no-repeat; background-position: center;
-              width: <%=80/16%>em;
-              height: <%=80/16%>em;
-            "></div>
-          <% end %>
+              <%6.times do%>
+              <div class="image-container"
+                style="background: url(https://via.placeholder.com/100x100) left top no-repeat; background-position: center;
+                width: <%=80/16%>em;
+                height: <%=80/16%>em;">
+              </div>
+            <% end %>
+            </div>
           </div>
         </div>
       </div>
-
-
-
-
-
-
-      </div>
     </div>
-
   </div>
+
   <div class = "backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100vw; height: 100vh; z-index: 3"></div>
   <div class = "backdrop" id="backdrop-background" style="position: absolute; background-color: white; opacity: 0.9; width: 100vw; height: 100vh; z-index: 3"></div>
 
@@ -155,7 +194,7 @@
       </div>
 
       <% project[:homepage_images][1..(:homepage_images.length)].each do |image_path| %>
-      <div style="position: absolute; top: <%=rand(-10..10)%>vw; right: <%=rand(-10..10)%>vw; z-index: 0"><%= image_tag(image_path, style: "max-height: 25vh; max-width: 6vw; margin: auto; opacity: 0.05")%>
+      <div class = "secondary-pot-image-container" style="top: <%=rand(-10..10)%>vw; right: <%=rand(-10..10)%>vw; z-index: 0"><%= image_tag(image_path, class: "secondary-pot-image" , style: "display: none")%>
       </div>
         <% end %>
     </div>
@@ -168,7 +207,7 @@
 
 </div>
 
-</body>
+</div>
 
 <script>
 backDrop = document.querySelectorAll(".backdrop")
