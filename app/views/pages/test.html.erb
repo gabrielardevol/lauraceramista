@@ -1,0 +1,50 @@
+<style>
+.image-container { /*l'estil ha d'anar inserit en l'html*/
+ /*s'ha d'insertar la url amb javascript o ruby*/
+box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
+border: 1px solid white;
+ /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
+ /*s'ha de calcular en javascript*/
+}</style>
+
+<div class="image-container"
+  style="background: url(https://via.placeholder.com/600x450) left top no-repeat;
+  width: <%=600/16%>em;
+  height: <%=450/16%>em;
+"></div>
+
+<div style="display: flex">
+<%3.times do%>
+<div class="image-container"
+  style="background: url(https://via.placeholder.com/100x100) left top no-repeat;
+  width: <%=100/16%>em;
+  height: <%=100/16%>em;
+"></div>
+<% end %>
+</div>
+
+
+<style>
+.image-container { /*l'estil ha d'anar inserit en l'html*/
+ /*s'ha d'insertar la url amb javascript o ruby*/
+box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
+border: 1px solid white;
+ /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
+ /*s'ha de calcular en javascript*/
+}</style>
+
+<div class="image-container"
+  style="background: url(https://via.placeholder.com/600x450) left top no-repeat;
+  width: <%=600/16%>em;
+  height: <%=450/16%>em;
+"></div>
+
+<div style="display: flex">
+<%3.times do%>
+<div class="image-container"
+  style="background: url(https://via.placeholder.com/100x100) left top no-repeat;
+  min-width: 100px;
+  min-height: 100px;
+"></div>
+<% end %>
+</div>

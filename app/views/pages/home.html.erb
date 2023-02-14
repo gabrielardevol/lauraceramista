@@ -12,16 +12,35 @@
   gap: 13.3vw;
 }
 .main-pot-image {
-  max-height: 25vh; max-width: 6vw;
+  max-height: 22vh; max-width: 5vw;
 }
+
+.backdrop {
+  display: none
+}
+
+/* .backdrop {overflow: hidden} */
+
 @media (max-width: 900px) {
 
   #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
   .main-pot-image {max-height: 25vh; max-width: 8vw;}
 }
+
+@media (max-width: 1000px) {
+
+}
+
 </style>
 
-
+<style>
+  .image-container { /*l'estil ha d'anar inserit en l'html*/
+  /*s'ha d'insertar la url amb javascript o ruby*/
+  box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
+  border: 1px solid white;
+  /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
+  /*s'ha de calcular en javascript*/
+  }</style>
 
 
   <% projects = [
@@ -66,7 +85,7 @@
 
 
 
-<body style="margin: 0; overflow-x: hidden; font-family: PT Mono">
+<body style="margin: 0; font-family: PT Mono; overflow: hidden">
   <div style="position: relative">
     <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
     <p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
@@ -75,11 +94,48 @@
 
 
   <div class="backdrop" style="position: absolute; z-index: 4">
-    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
-    <div style="width: 80vw; position: absolute; left: 20vw; height: 50vh; background-color: whitesmoke"></div>
+    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw; position: fixed; top: 0px;">Laura Elias</h1></div>
+    <div style="">
+      <div style="position: absolute; height: 100vh; background-color: transparent"></div>
+
+      <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh">
+
+        <div style = "height: fit-content; width: 45vw; margin: 0 0 0 10vh">
+          <h2>Aqui va el títol del projecte</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+
+        <div style="width: 50vw">
+          <div style="width: fit-content; margin: auto; flex-wrap: wrap">
+            <div class="image-container"
+              style="background: url(https://via.placeholder.com/1200x900) left top no-repeat; background-position: center;
+              height: 32vw;
+              width: 32vw;
+            "></div>
+
+            <div style="display: flex">
+            <%6.times do%>
+            <div class="image-container"
+              style="background: url(https://via.placeholder.com/100x100) left top no-repeat; background-position: center;
+              width: <%=80/16%>em;
+              height: <%=80/16%>em;
+            "></div>
+          <% end %>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      </div>
+    </div>
+
   </div>
   <div class = "backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100vw; height: 100vh; z-index: 3"></div>
-  <div class = "backdrop" id="backdrop-background" style="position: absolute; background-color: white; opacity: 0.7; width: 100vw; height: 100vh; z-index: 3"></div>
+  <div class = "backdrop" id="backdrop-background" style="position: absolute; background-color: white; opacity: 0.9; width: 100vw; height: 100vh; z-index: 3"></div>
 
 
   <div id="pots-layout" style=" display: flex; flex-wrap: wrap; background-color: transparent; ">
@@ -91,11 +147,10 @@
     <div style="background-color: transparent; width: 10vw; height: 10vw; position: relative; ">
       <div style="position: absolute; z-index: 2; display: grid">
 
-
         <%= image_tag(project[:homepage_images][0], class: "main-pot-image", style: " margin: auto")%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
-          <div style="   background-color: white; position: absolute; color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
-          <a class="project-button" style="background-color: transparent; position: relative; text-align: center; font-size: 0.9em"><%=project[:name]%></a>
+          <div style="padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
+          <a class="project-button" style="background-color: transparent; position: relative; text-align: center; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
         </div>
       </div>
 
@@ -125,10 +180,13 @@ for (var i = 0; i < backDrop.length; i++) {
 
 
 <script>
+body = document.querySelector("body")
 backDrop = document.querySelectorAll(".backdrop")
 function viewBackDrop() {
+  body.style.overflowY = "hidden";
   for (var i = 0; i < backDrop.length; i++) {
     backDrop[i].style.display = "block";
+    backDrop[i].style.top = window.scrollY + "px";
 }
 }
 
@@ -140,10 +198,11 @@ for (var i = 0; i < projectButtons.length; i++) {
 </script>
 
 <script>
-
+body = document.querySelector("body")
 backDrop = document.querySelectorAll(".backdrop")
 backgroundBackdrop = document.querySelector("#backdrop-background")
 function hydeBackDrop() {
+  body.style.overflowY = "scroll";
   for (var i = 0; i < backDrop.length; i++) {
     backDrop[i].style.display = "none";
 }
