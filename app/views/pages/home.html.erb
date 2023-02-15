@@ -6,246 +6,177 @@
 </style>
 
 <style>
-#pots-layout {
-  margin-left: 20vw;
-  width: 80vw;
-  gap: 13.3vw;
-}
-.main-pot-image, .secondary-pot-image {
-  max-height: 16vh; max-width: 8vw;
-}
+  #pots-layout { padding-left: 20vw; max-width: 80vw; gap: 17vw;}
+  .main-pot-image {position: relative; z-index: 1;}
+  .main-pot-image, .secondary-pot-image {max-height: 12vh; max-width: 5vw;}
+  .secondary-pot-image-container { ;}
+  .secondary-pot-image {margin: auto; opacity: 1; position: absolute; z-index: 0 }
+  .backdrop {display: none}
+  body {margin: 0px;  font-family: PT Mono;}
 
-.secondary-pot-image-container {
-  position: absolute;
-
-}
-
-.secondary-pot-image {
-  max-height: 25vh; max-width: 6vw; margin: auto; opacity: 1
-}
-
-.backdrop {
-  display: none
-}
-
-@media (max-width: 900px) {
-
-  #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
-  .main-pot-image {max-height: 25vh; max-width: 8vw;}
-}
-
-@media (max-width: 1000px) {
-
-}
-
+  @media (max-width: 900px) {
+    #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
+    .main-pot-image, .secondary-pot-image {max-height: 25vh; max-width: 8vw;}
+  }
 </style>
 
+
 <style>
-  .image-container { /*l'estil ha d'anar inserit en l'html*/
-  /*s'ha d'insertar la url amb javascript o ruby*/
+  .image-container {
   box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
-  border: 1px solid white;
-  /*s'ha de calcular en javascript ///// ha d'estar en una unitat de mesura responsive; he de veure a quants pixels es correspòn 1em */
-  /*s'ha de calcular en javascript*/
-  }</style>
+  border: 1px solid white;}
+</style>
+
+
+<%#mètode per a obtenir array de fitxers dona't un directori%>
+<%
+def dir_to_array(string, prefix = "")
+  array = []
+  Dir.foreach(string) do |filename|
+    next if filename == '.' or filename == '..'
+    array << prefix + filename
+  end
+  return array.reverse
+end
+%>
+
+<% projects = [
+{name: "Projecte1", content:"Lorem ipsum dolor sit amet", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/"), showpage_images: dir_to_array('app/assets/images/1/op', '1/op/')},
+{name: "Projecte2", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
+{name: "Projecte3", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
+{name: "Projecte4", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
+{name: "Projecte5", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
+{name: "Projecte6", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/")},
+{name: "Projecte7", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
+{name: "Projecte8", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
+{name: "Projecte9", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
+{name: "Projecte10", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
+{name: "Projecte11", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/")},
+{name: "Projecte12", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
+{name: "Projecte13", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
+{name: "Projecte14", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
+{name: "Projecte15", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
+] %>
+
+<%= image_path(projects[0][:showpage_images][0]) %>
+
+<% image_url = image_path(projects[0][:showpage_images][0])  %>
+<%= image_url %>
+<% width, height = FastImage.size("https://via.placeholder.com/800x798") %>
+<p>This image is <%= width %> pixels wide and <%= height %> pixels high.</p>
 
 
 
-
-  <%  def dir_to_array(string, prefix = "")
-        array = []
-        Dir.foreach(string) do |filename|
-          next if filename == '.' or filename == '..'
-          array << prefix + filename
-        end
-        return array.reverse
-      end
-  %>
-
-  <% projects = [
-  {name: "Projecte", directory: "app/assets/images/3/tr", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
-
-  {
-    name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
-  },
-  {
-    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
-  },
-  {
-    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
-  },
-    {
-    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
-  },
-  {
-    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
-  },
-  {
-    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
-  },
-    {
-    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
-  },
-    {
-    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
-  },
-    {
-    name: "Peces de color blanc", text_content: "", homepage_images:["peça (12).png", "peça (8).png", "peça (9).png", "peça (12).png"]
-  },
- {
-    name: "Gerro ivon", text_content: "", homepage_images:["peça (6).png", "peça (7).png"]
-  },
-  {
-    name: "Vaixella per a la tieta", text_content: "", homepage_images:["peça (8).png", "peça (9).png"]
-  },
-  {
-    name: "Gerros", text_content: "", homepage_images:["peça (2).png", "peça (13).png", "peça (5).png", "peça (7).png"]
-  },
-  ] %>
-
-<div style="position: absolute">
-
-  <div style="position: relative">
-    <%= image_tag(projects[0][:homepage_images][0], class: "main-pot-image target", "data-images": projects[0][:homepage_images], "data-index": 0, style: "position: absolute; z-index: 1")%>
-
-      <div class="secondary-pot-image-container" id= "container-target" style="position: absolute; top: 10vw" >
-        <%= image_tag(projects[0][:homepage_images][0], class: "secondary-pot-image", style: "top: 6vw; right: -10vw; position: absolute")%>
-        <%= image_tag(projects[0][:homepage_images][0], class: "secondary-pot-image", style: "top: 12vw; right: -8vw; position: absolute")%>
-      </div>
-  </div>
-
-
-</div>
-
-<script>
-const target = document.querySelector(".target")
-const container = document.querySelector("#container-target")
-target.addEventListener("click", () => {console.log(target.dataset.images.split(" ").length);
-  var element = container.appendChild(document.createElement("div"));
-  element.style.display = "flex"
-  element.innerHTML = '<img src="https://via.placeholder.com/150" style= "position: absolute; z-index: 0 ">'
-
-
-})
-</script>
-
-
-
-<div style="margin: 0; font-family: PT Mono; overflow: hidden; display: none">
-  <div style="position: relative">
-    <div style="min-width: 15em; position: fixed; z-index: 3; margin-top: 20vh"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
-    <p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
-  </div>
-
-  <div class="backdrop" style="position: absolute; z-index: 4">
-    <div style="min-width: 15em; position: fixed; z-index: 3"><h1 style="margin: 0; font-size: 3vw; position: fixed; top: 0px;">Laura Elias</h1></div>
-      <div style="">
-
-        <div style="position: absolute; height: 100vh; background-color: transparent"></div>
-
-        <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh">
-
-          <div style = "height: fit-content; width: 45vw; margin: 0 0 0 10vh">
-            <h2>Aqui va el títol del projecte</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-          </div>
-
-          <div style="width: 50vw">
-            <div style="width: fit-content; margin: auto; flex-wrap: wrap">
-              <div class="image-container"
-                style="background: url(https://via.placeholder.com/1200x900) left top no-repeat; background-position: center;
-                height: 32vw;
-                width: 32vw;">
-              </div>
-
-            <div style="display: flex">
-              <%6.times do%>
-              <div class="image-container"
-                style="background: url(https://via.placeholder.com/100x100) left top no-repeat; background-position: center;
-                width: <%=80/16%>em;
-                height: <%=80/16%>em;">
-              </div>
-            <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class = "backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100vw; height: 100vh; z-index: 3"></div>
-  <div class = "backdrop" id="backdrop-background" style="position: absolute; background-color: white; opacity: 0.9; width: 100vw; height: 100vh; z-index: 3"></div>
-
-
-  <div id="pots-layout" style=" display: flex; flex-wrap: wrap; background-color: transparent; ">
-
-
-    <%projects.each do |project|%>
-
-
-    <div style="background-color: transparent; width: 10vw; height: 10vw; position: relative; ">
-      <div style="position: absolute; z-index: 2; display: grid">
-
-        <%= image_tag(project[:homepage_images][0], class: "main-pot-image", style: " margin: auto")%>
+<div id="pots-layout" style="display: flex; flex-wrap: wrap; position: absolute; overflow: hidden">
+  <%projects[0..-1].each_with_index do |project, index|%>
+  <div id="<%=project[:name]%>" style="position: relative; z-index: 1">
+    <%= image_tag(projects[index][:homepage_images][0], "data-project": project[:name] , class: "main-pot-image target", "data-images": projects[index][:homepage_images], "data-index": 2)%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
-          <div style="padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
-          <a class="project-button" style="background-color: transparent; position: relative; text-align: center; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
+          <div style="padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 1;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
+          <a class="project-button project-show" style="background-color: transparent; position: relative; z-index: 1; text-align: center; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
+        </div>
+    <%projects[index][:homepage_images].each_with_index do |route, index|%>
+    <%= image_tag(route, style: "display: none", "data-project": project[:name] )%>
+    <%end%>
+  </div>
+  <%end%>
+
+</div>
+<div style="min-width: 15em; position: fixed; z-index: 4;"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
+<div class ="backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100%; min-height: 100%; z-index: 2"></div>
+<div class ="backdrop" style="position: absolute; width: 100%; min-height: 100%; z-index: 2; background-color: white; opacity: 0.85"></div>
+<div class="backdrop" style="position: absolute; background-color: transparent; min-height: 100%; min-width: 100%; z-index: 3;">
+  <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh"> <%# flex amb les dues columnes%>
+    <div style = "height: fit-content; min-width: 50%; margin: 0 0 0 10vh"> <%# columna esquerra (text)%>
+      <h2 class="project-show"><%=projects[0][:name]%></h2>
+      <p class="project-show"><%=projects[0][:content]%></p>
+    </div>
+    <div style="width: 50vw"> <%# columna dreta (imatges)%>
+      <div style="width: fit-content; margin: auto; flex-wrap: wrap">
+        <div class="project-show image-container"
+          style="background: url(<%= image_path(projects[0][:showpage_images][0]) %>) left top no-repeat; background-position: center;
+          height: 32vw;
+          width: 32vw;">
+        </div>
+        <div style="display: flex"> <%# imatges petites sota la gran%>
+          <%projects[0][:showpage_images][1..-1].each_with_index do |image, index|%>
+          <div class="project-show image-container"
+            style="background: url(<%=image_path(image)%>) left top no-repeat; background-position: center; background-size: 100px;
+            width: <%=80/16%>em;
+            height: <%=80/16%>em;">
+          </div>
+        <% end %>
         </div>
       </div>
-
-      <% project[:homepage_images][1..(:homepage_images.length)].each do |image_path| %>
-      <div class = "secondary-pot-image-container" style="top: <%=rand(-10..10)%>vw; right: <%=rand(-10..10)%>vw; z-index: 0"><%= image_tag(image_path, class: "secondary-pot-image" , style: "display: none")%>
-      </div>
-        <% end %>
     </div>
+  </div>
+</div>
 
-    <% end %>
-
-   </div>
-
+<div style="min-width: 15em; position: fixed;"><h1 style="margin: 0; font-size: 3vw;">Laura Elias, <br>ceramista</h1>
+<p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
+<div style="position: relative; z-index: 1">
   <img src="<%= asset_path 'laura_somrient.png' %>" alt="Description of Image" style="width: 20vw; position: fixed; bottom: 0;">
-
 </div>
 
-</div>
+
+
+
 
 <script>
-backDrop = document.querySelectorAll(".backdrop")
+var projectButtons = document.querySelectorAll(".project-button")
+var backDrops = document.querySelectorAll(".backdrop")
 
-for (var i = 0; i < backDrop.length; i++) {
-    backDrop[i].style.display = "none";
+function showProject() {
+  backDrops.forEach(function(backDrop) {
+    backDrop.style.display = "block"
+    console.log(backDrop.style.display)
+  })
 }
+
+function hydeProject() {
+   backDrops.forEach(function(backDrop) {
+     backDrop.style.display = "none"
+   })
+ }
+
+
+projectButtons.forEach(function(button) {
+  button.addEventListener("click", showProject)
+});
+
+document.addEventListener('click', function(event) {
+  if (!event.target.classList.contains('project-show')) {
+    console.log('Class not clicked');
+    hydeProject();
+  }
+ });
+
+
 </script>
 
 
-<script>
-body = document.querySelector("body")
-backDrop = document.querySelectorAll(".backdrop")
-function viewBackDrop() {
-  body.style.overflowY = "hidden";
-  for (var i = 0; i < backDrop.length; i++) {
-    backDrop[i].style.display = "block";
-    backDrop[i].style.top = window.scrollY + "px";
-}
-}
 
-projectButtons = document.querySelectorAll(".project-button")
-for (var i = 0; i < projectButtons.length; i++) {
-  projectButtons[i].addEventListener('click', viewBackDrop)
-
-}
-</script>
 
 <script>
-body = document.querySelector("body")
-backDrop = document.querySelectorAll(".backdrop")
-backgroundBackdrop = document.querySelector("#backdrop-background")
-function hydeBackDrop() {
-  body.style.overflowY = "scroll";
-  for (var i = 0; i < backDrop.length; i++) {
-    backDrop[i].style.display = "none";
-}
-}
-backgroundBackdrop.addEventListener('click', hydeBackDrop)
+const targets = document.querySelectorAll(".target")
+targets.forEach(target => {
+  target.addEventListener('click', () => {
+    const currentProjectName = target.dataset.project;
+    const images = document.querySelectorAll(`[data-project= ${target.dataset.project}]`)
+    const container = document.querySelector(`#${target.dataset.project}`);
+    const index = target.dataset.index;
+    const newimg = document.createElement("img")
+    target.dataset.index ++
+    newimg.src = images[index].src;
+    newimg.classList.add("secondary-pot-image")
+    var randomNum = Math.floor(Math.random() * 60 - 30);
+    newimg.style.right = randomNum + "vh"
+    var randomNum = Math.floor(Math.random() * 60 - 30);
 
+    newimg.style.top = randomNum + "vh"
+
+    container.appendChild(newimg)
+    if(parseInt(index) == (images.length - 1)){ target.dataset.index = 1 }
+  });
+});
 </script>
