@@ -40,71 +40,51 @@ def dir_to_array(string, prefix = "")
 end
 %>
 
-<% projects = [
-{name: "Projecte1", content:"Lorem ipsum dolor sit amet", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/"), showpage_images: dir_to_array('app/assets/images/1/op', '1/op/')},
-{name: "Projecte2", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
-{name: "Projecte3", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
-{name: "Projecte4", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
-{name: "Projecte5", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
-{name: "Projecte6", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/")},
-{name: "Projecte7", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
-{name: "Projecte8", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
-{name: "Projecte9", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
-{name: "Projecte10", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
-{name: "Projecte11", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/")},
-{name: "Projecte12", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
-{name: "Projecte13", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
-{name: "Projecte14", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
-{name: "Projecte15", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
-] %>
-
-<%= image_path(projects[0][:showpage_images][0]) %>
-
-<% image_url = image_path(projects[0][:showpage_images][0])  %>
-<%= image_url %>
-<% width, height = FastImage.size("https://via.placeholder.com/800x798") %>
-<p>This image is <%= width %> pixels wide and <%= height %> pixels high.</p>
-
-
-
 <div id="pots-layout" style="display: flex; flex-wrap: wrap; position: absolute; overflow: hidden">
-  <%projects[0..-1].each_with_index do |project, index|%>
+  <%@projects[0..-1].each_with_index do |project, index|%>
   <div id="<%=project[:name]%>" style="position: relative; z-index: 1">
-    <%= image_tag(projects[index][:homepage_images][0], "data-project": project[:name] , class: "main-pot-image target", "data-images": projects[index][:homepage_images], "data-index": 2)%>
+    <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
           <div style="padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 1;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
           <a class="project-button project-show" style="background-color: transparent; position: relative; z-index: 1; text-align: center; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
         </div>
-    <%projects[index][:homepage_images].each_with_index do |route, index|%>
+    <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
     <%= image_tag(route, style: "display: none", "data-project": project[:name] )%>
     <%end%>
   </div>
   <%end%>
 
 </div>
+
+
 <div style="min-width: 15em; position: fixed; z-index: 4;"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
 <div class ="backdrop" style="position: absolute; backdrop-filter: blur(6px); width: 100%; min-height: 100%; z-index: 2"></div>
 <div class ="backdrop" style="position: absolute; width: 100%; min-height: 100%; z-index: 2; background-color: white; opacity: 0.85"></div>
 <div class="backdrop" style="position: absolute; background-color: transparent; min-height: 100%; min-width: 100%; z-index: 3;">
-  <div style="position: absolute; background-color: transparent; display: flex; align-items: center; margin-top: 5vh"> <%# flex amb les dues columnes%>
-    <div style = "height: fit-content; min-width: 50%; margin: 0 0 0 10vh"> <%# columna esquerra (text)%>
-      <h2 class="project-show"><%=projects[0][:name]%></h2>
-      <p class="project-show"><%=projects[0][:content]%></p>
+
+  <div style="position: absolute; display: flex; align-items: center;"> <%# flex amb les dues columnes%>
+    <div style = "height: fit-content; min-width: 49vw;"> <%# columna esquerra (text)%>
+    <%@projects[0..-1].each_with_index do |project, index|%>
+    <div style="position: absolute">
+      <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name]%></h2>
+      <p class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:content]%></p>
     </div>
-    <div style="width: 50vw"> <%# columna dreta (imatges)%>
-      <div style="width: fit-content; margin: auto; flex-wrap: wrap">
-        <div class="project-show image-container"
-          style="background: url(<%= image_path(projects[0][:showpage_images][0]) %>) left top no-repeat; background-position: center;
-          height: 32vw;
-          width: 32vw;">
+    <%end%>
+    </div>
+    <div style="min-width: 49vw"> <%# columna dreta (imatges)%>
+      <div>
+        <div class="project-show image-container project-show-main-image-container" style="background: url() left top no-repeat; background-position: center;">
+          <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "opacity: 0", class: "invisible-image project-show") %>
         </div>
         <div style="display: flex"> <%# imatges petites sota la gran%>
-          <%projects[0][:showpage_images][1..-1].each_with_index do |image, index|%>
-          <div class="project-show image-container"
+          <%@projects[0..-1].each_with_index do |project, index|%>
+          <%JSON.parse(@projects[index][:showpage_images])[0..-1].each_with_index do |image, index|%>
+          <div class="project-show project-hide element-<%=project[:name]%> image-container project-show-small-image small-image-<%=project[:name]%>"
             style="background: url(<%=image_path(image)%>) left top no-repeat; background-position: center; background-size: 100px;
             width: <%=80/16%>em;
             height: <%=80/16%>em;">
           </div>
+          <% end %>
         <% end %>
         </div>
       </div>
@@ -123,35 +103,105 @@ end
 
 
 <script>
+const buttons = document.querySelectorAll(".project-button")
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    console.log("clicked a project button")
+    projectElements = document.querySelectorAll(`.element-${button.textContent}`)
+    projectElements.forEach(function(element) {
+      element.style.display = "block"
+    }
+    )
+
+    firstImage = document.querySelector(`.small-image-${button.textContent}`)
+    url = firstImage.style.background.split(" ")[0].substring(5, firstImage.style.background.split(" ")[0].length - 2)
+
+    var invisibleImage = document.querySelector(".invisible-image");
+    var projectShowMainImage = document.querySelector(".project-show-main-image-container");
+
+    invisibleImage.src = url;
+    projectShowMainImage.style.background = `url(${url}) center center no-repeat`
+
+    invisibleImage.addEventListener('load', function() {
+      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+    });
+  });
+});
+</script>
+
+
+
+<script>
+// està dividit en dues funcions, una que actualitza la mida i l'altra que actualitza la imatge. podrien ser una sola funció perfectament...
+
 var projectButtons = document.querySelectorAll(".project-button")
+var projectShowMainImage = document.querySelector(".project-show-main-image-container");
+var invisibleImage = document.querySelector(".invisible-image");
+
+//ON CLICK:
+// si cliques a un element amb la classe "imatge petita", n'agafa la URL i la traspassa a la imatge fantasma, i d'aquesta n'agafa la mida i la traspassa a la imatge fantasma.
+function changeMainImageSize(event) {
+  const clickedObject = event.target;
+  if (clickedObject.classList.contains('project-show-small-image')){
+    targetURL = clickedObject.style.background.split(" ")[0].substring(5, clickedObject.style.background.split(" ")[0].length - 2)
+    invisibleImage.src = targetURL;
+    invisibleImage.addEventListener('load', function() {
+      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+    });
+  }
+}
+document.addEventListener('click', changeMainImageSize);
+
+var backgroundValue = projectShowMainImage.style.background
+function handleClick(event) {  // changes main image background ----- si cliques a un element amb la classe "imatge petita" n'agafa la url de la imatge, la depura i la hi traspassa a la
+  const clickedObject = event.target; // imatge principal com a valor de background
+  if (clickedObject.classList.contains('project-show-small-image')) {
+    newURLBruta = clickedObject.style.background.split(" ")[0]
+    newURL = newURLBruta.substring(5, newURLBruta.length - 2)
+    currentValue = projectShowMainImage.style.background.split(" ")
+    newValue = newURLBruta + " " + currentValue[1] + " " + currentValue[2] + " " + currentValue[3]
+    projectShowMainImage.style.background = newValue
+    invisibleImage.src = newURL
+    urlBruta = clickedObject.style.background.split(" ")[0]
+    urlNeta = urlBruta.substring(5, urlBruta.length - 2)
+  }
+}
+document.addEventListener('click', handleClick);
+
 var backDrops = document.querySelectorAll(".backdrop")
 
 function showProject() {
   backDrops.forEach(function(backDrop) {
     backDrop.style.display = "block"
-    console.log(backDrop.style.display)
   })
 }
 
+
+projectShow = document.querySelectorAll(".project-hide"); //aquestes línies amaguen les imatges petites dels altres projectes
+projectShow.forEach(function(element) {
+element.style.display = "none"
+})
 function hydeProject() {
    backDrops.forEach(function(backDrop) {
      backDrop.style.display = "none"
    })
+   projectShow = document.querySelectorAll(".project-hide");
+   projectShow.forEach(function(element) {
+    element.style.display = "none"
+   })
  }
-
 
 projectButtons.forEach(function(button) {
   button.addEventListener("click", showProject)
 });
-
 document.addEventListener('click', function(event) {
   if (!event.target.classList.contains('project-show')) {
     console.log('Class not clicked');
     hydeProject();
   }
  });
-
-
 </script>
 
 

@@ -4,7 +4,6 @@
   .main-pot-image, .secondary-pot-image {max-height: 12vh; max-width: 5vw;}
   .secondary-pot-image-container { ;}
   .secondary-pot-image {margin: auto; opacity: 1; position: absolute; z-index: 0 }
-  .backdrop {display: none}
 
   @media (max-width: 900px) {
     #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
@@ -23,24 +22,38 @@
   end
 %>
 
-<% projects = [
-{name: "Projecte1", directory: "app/assets/images/1/tr", homepage_images: dir_to_array("app/assets/images/1/tr", "1/tr/")},
-{name: "Projecte2", directory: "app/assets/images/2/tr", homepage_images: dir_to_array("app/assets/images/2/tr", "2/tr/")},
-{name: "Projecte3", directory: "app/assets/images/3/tr", homepage_images: dir_to_array("app/assets/images/3/tr", "3/tr/")},
-{name: "Projecte4", directory: "app/assets/images/4/tr", homepage_images: dir_to_array("app/assets/images/4/tr", "4/tr/")},
-{name: "Projecte5", directory: "app/assets/images/5/tr", homepage_images: dir_to_array("app/assets/images/5/tr", "5/tr/")},
-] %>
-
 <div style="display: flex; gap: 20vw">
-  <%projects[1..-1].each_with_index do |project, index|%>
+  <%@projects.each_with_index do |project, index|%>
   <div id="<%=project[:name]%>" style="position: relative; z-index: 1">
-    <%= image_tag(projects[index][:homepage_images][0], "data-project": project[:name] , class: "main-pot-image target", "data-images": projects[index][:homepage_images], "data-index": 2)%>
-    <%projects[index][:homepage_images].each_with_index do |route, index|%>
-    <%= image_tag(route, style: "display: none", "data-project": project[:name] )%>
+    <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
+    <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
+      <%= image_tag(route, style: "display: none", "data-project": project[:name] )%>
     <%end%>
+    <div class="project-button"><%=project[:name]%></div>
+  </div>
+
+
+  <div style="position: absolute; top: 20vh" data-project="item <%=project[:name]%>">
+    <%=project[:name]%>
   </div>
   <%end%>
 </div>
+
+
+
+
+<script>
+const buttons = document.querySelectorAll(".project-button")
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    console.log(button.textContent)
+    item = document.querySelector(`[data-project = "item ${button.textContent}"]`)
+    item.style.color = "red"
+
+  });
+});
+</script>
+
 
 
 <script>
@@ -66,6 +79,8 @@ targets.forEach(target => {
     if(parseInt(index) == (images.length - 1)){ target.dataset.index = 1 }
   });
 });
+
+
 
 // target.addEventListener("click", () => {console.log(target.dataset.images.split(" ").length);
 //   var element = container.appendChild(document.createElement("img"));
