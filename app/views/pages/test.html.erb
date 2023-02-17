@@ -1,43 +1,107 @@
 <style>
-  #pots-layout {margin-left: 20vw; width: 80vw; gap: 13.3vw;}
-  .main-pot-image {position: relative; z-index: 1;}
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap');
+</style>
+
+<style>
+  #pots-layout { padding-left: 20vw; max-width: 80vw; gap: 17vw;}
+  .main-pot-image {position: relative; z-index: 2;}
   .main-pot-image, .secondary-pot-image {max-height: 12vh; max-width: 5vw;}
   .secondary-pot-image-container { ;}
-  .secondary-pot-image {margin: auto; opacity: 1; position: absolute; z-index: 0 }
+  .secondary-pot-image {margin: auto; opacity: 1; position: absolute; z-index: 1 }
+  .backdrop {display: none}
+  body {margin: 0px;  font-family: PT Mono;}
 
   @media (max-width: 900px) {
     #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
-    .main-pot-image {max-height: 25vh; max-width: 8vw;}
+    .main-pot-image, .secondary-pot-image {max-height: 25vh; max-width: 8vw;}
   }
 </style>
 
+
+<style>
+  .image-container {
+  box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
+  border: 1px solid white;}
+</style>
+
+
+<%#mètode per a obtenir array de fitxers dona't un directori%>
 <%
-  def dir_to_array(string, prefix = "")
-    array = []
-    Dir.foreach(string) do |filename|
-      next if filename == '.' or filename == '..'
-      array << prefix + filename
-    end
-    return array.reverse
+def dir_to_array(string, prefix = "")
+  array = []
+  Dir.foreach(string) do |filename|
+    next if filename == '.' or filename == '..'
+    array << prefix + filename
   end
+  return array.reverse
+end
 %>
 
-<div style="display: flex; gap: 20vw">
-  <%@projects.each_with_index do |project, index|%>
-  <div id="<%=project[:name]%>" style="position: relative; z-index: 1">
+<div id="pots-layout" style="display: flex; gap: 16vw; row-gap: 30vh;  flex-wrap: wrap; position: absolute; overflow: hidden; min-height: 100vh">
+  <%@projects[0..-1].each_with_index do |project, index|%>
+  <div id="<%=project[:name]%>" style="position: relative; width: fit-content; text-align: center">
     <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
+        <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
+          <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
+          <a class="project-button project-show" style="max-width: 8vw; background-color: transparent; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
+        </div>
     <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
-      <%= image_tag(route, style: "display: none", "data-project": project[:name] )%>
+    <%= image_tag(route, style: "display: none; position: relative; z-index: 3", "data-project": project[:name] )%>
     <%end%>
-    <div class="project-button"><%=project[:name]%></div>
-  </div>
-
-
-  <div style="position: absolute; top: 20vh" data-project="item <%=project[:name]%>">
-    <%=project[:name]%>
   </div>
   <%end%>
+
 </div>
+
+<div style="">
+  <div style="min-width: 15em; position: fixed; z-index: 4;"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
+  <div class ="backdrop" style="position: fixed; backdrop-filter: blur(6px); width: 100%; min-height: 100%; z-index: 2"></div>
+  <div class ="backdrop" style="position: fixed; width: 100%; min-height: 100%; z-index: 2; background-color: white; opacity: 0.85"></div>
+  <div class="backdrop" style="position: fixed; overflow-y: scroll; overflow-x: hidden; background-color: transparent; min-height: 100%; min-width: 100%; z-index: 3;">
+
+    <div style="position: absolute; display: flex; align-items: center; overflow-y: scroll"> <%# flex amb les dues columnes%>
+      <div style = "height: fit-content; min-width: 50vw;"> <%# columna esquerra (text)%>
+      <%@projects[0..-1].each_with_index do |project, index|%>
+      <div style="position: absolute; max-width: 50vw">
+        <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name]%></h2>
+        <p class="project-show project-hide element-<%=project[:name]%>" style="display: none;"><%=@projects[index][:content]%></p>
+      </div>
+      <%end%>
+      </div>
+      <div style="min-width: 50vw"> <%# columna dreta (imatges)%>
+        <div style="background-color: whitesmoke; min-height: 80vh; max-height: 80vh; max-width: 50vw; display: flex; align-items: center">
+          <div class="project-show image-container project-show-main-image-container" style="max-height: inherit; max-width: inherit; background: url() left top no-repeat; background-position: contain;">
+          <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "max-height: inherit; opacity: 0", class: "invisible-image project-show") %>
+          </div>
+        </div>
+          <div style="display: flex; flex-wrap: wrap; max-width: inherit"> <%# imatges petites sota la gran%>
+            <%@projects[0..-1].each_with_index do |project, index|%>
+            <%JSON.parse(@projects[index][:showpage_images])[0..-1].each_with_index do |image, index|%>
+            <div class="project-show project-hide element-<%=project[:name]%> image-container project-show-small-image small-image-<%=project[:name]%>"
+              style="background: url(<%=image_path(image)%>) left top no-repeat; background-position: center; background-size: 100px;
+              width: <%=80/16%>em;
+              height: <%=80/16%>em;">
+            </div>
+            <% end %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div style="min-width: 15em; position: fixed;"><h1 style="margin: 0; font-size: 3vw; position: relative; z-index: 0">Laura Elias, <br>ceramista</h1>
+<p style="margin: 0; font-size: 1.2vw">Cursos <br> Tallers <br> Contacte: +34 646 18 16 10 <br> e-mail: artsdevol@gmail.com <br> bona tarda no sé</p>
+<div style="position: relative; z-index: 1">
+  <img src="<%= asset_path 'laura_somrient.png' %>" alt="Description of Image" style="width: 20vw; position: fixed; bottom: 0;">
+</div>
+
 
 
 
@@ -46,10 +110,26 @@
 const buttons = document.querySelectorAll(".project-button")
 buttons.forEach(button => {
   button.addEventListener('click', () => {
-    console.log(button.textContent)
-    item = document.querySelector(`[data-project = "item ${button.textContent}"]`)
-    item.style.color = "red"
+    console.log("clicked a project button")
+    projectElements = document.querySelectorAll(`.element-${button.textContent}`)
+    projectElements.forEach(function(element) {
+      element.style.display = "block"
+    }
+    )
 
+    firstImage = document.querySelector(`.small-image-${button.textContent}`)
+    url = firstImage.style.background.split(" ")[0].substring(5, firstImage.style.background.split(" ")[0].length - 2)
+
+    var invisibleImage = document.querySelector(".invisible-image");
+    var projectShowMainImage = document.querySelector(".project-show-main-image-container");
+
+    invisibleImage.src = url;
+    projectShowMainImage.style.background = `url(${url}) center center no-repeat`
+
+    invisibleImage.addEventListener('load', function() {
+      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+    });
   });
 });
 </script>
@@ -57,8 +137,87 @@ buttons.forEach(button => {
 
 
 <script>
-const targets = document.querySelectorAll(".target")
+// està dividit en dues funcions, una que actualitza la mida i l'altra que actualitza la imatge. podrien ser una sola funció perfectament...
 
+var projectButtons = document.querySelectorAll(".project-button")
+var projectShowMainImage = document.querySelector(".project-show-main-image-container");
+var invisibleImage = document.querySelector(".invisible-image");
+
+//ON CLICK:
+// si cliques a un element amb la classe "imatge petita", n'agafa la URL i la traspassa a la imatge fantasma, i d'aquesta n'agafa la mida i la traspassa a la imatge fantasma.
+function changeMainImageSize(event) {
+  const clickedObject = event.target;
+  if (clickedObject.classList.contains('project-show-small-image')){
+    targetURL = clickedObject.style.background.split(" ")[0].substring(5, clickedObject.style.background.split(" ")[0].length - 2)
+    invisibleImage.src = targetURL;
+    invisibleImage.addEventListener('load', function() {
+      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+    });
+  }
+}
+document.addEventListener('click', changeMainImageSize);
+
+var backgroundValue = projectShowMainImage.style.background
+function handleClick(event) {  // changes main image background ----- si cliques a un element amb la classe "imatge petita" n'agafa la url de la imatge, la depura i la hi traspassa a la
+  const clickedObject = event.target; // imatge principal com a valor de background
+  if (clickedObject.classList.contains('project-show-small-image')) {
+    newURLBruta = clickedObject.style.background.split(" ")[0]
+    newURL = newURLBruta.substring(5, newURLBruta.length - 2)
+    currentValue = projectShowMainImage.style.background.split(" ")
+    newValue = newURLBruta + " " + currentValue[1] + " " + currentValue[2] + " " + currentValue[3]
+    projectShowMainImage.style.background = newValue
+    invisibleImage.src = newURL
+    urlBruta = clickedObject.style.background.split(" ")[0]
+    urlNeta = urlBruta.substring(5, urlBruta.length - 2)
+  }
+}
+document.addEventListener('click', handleClick);
+
+var backDrops = document.querySelectorAll(".backdrop")
+
+function showProject() {
+  backDrops.forEach(function(backDrop) {
+    backDrop.style.display = "block"
+  })
+
+  document.querySelector("body").style.overflowY = "hidden"
+}
+
+
+projectShow = document.querySelectorAll(".project-hide"); //aquestes línies amaguen les imatges petites dels altres projectes
+projectShow.forEach(function(element) {
+element.style.display = "none"
+})
+function hydeProject() {
+   backDrops.forEach(function(backDrop) {
+     backDrop.style.display = "none"
+   })
+   projectShow = document.querySelectorAll(".project-hide");
+   projectShow.forEach(function(element) {
+    element.style.display = "none"
+   })
+
+     document.querySelector("body").style.overflowY = "scroll"
+
+ }
+
+projectButtons.forEach(function(button) {
+  button.addEventListener("click", showProject)
+});
+document.addEventListener('click', function(event) {
+  if (!event.target.classList.contains('project-show')) {
+    console.log('Class not clicked');
+    hydeProject();
+  }
+ });
+</script>
+
+
+
+
+<script>
+const targets = document.querySelectorAll(".target")
 targets.forEach(target => {
   target.addEventListener('click', () => {
     const currentProjectName = target.dataset.project;
@@ -69,9 +228,9 @@ targets.forEach(target => {
     target.dataset.index ++
     newimg.src = images[index].src;
     newimg.classList.add("secondary-pot-image")
-    var randomNum = Math.floor(Math.random() * 41) - 20;
+    var randomNum = Math.floor(Math.random() * 100 - 50);
     newimg.style.right = randomNum + "vh"
-    var randomNum = Math.floor(Math.random() * 41) - 20;
+    var randomNum = Math.floor(Math.random() * 60 - 30);
 
     newimg.style.top = randomNum + "vh"
 
@@ -79,15 +238,4 @@ targets.forEach(target => {
     if(parseInt(index) == (images.length - 1)){ target.dataset.index = 1 }
   });
 });
-
-
-
-// target.addEventListener("click", () => {console.log(target.dataset.images.split(" ").length);
-//   var element = container.appendChild(document.createElement("img"));
-//   element.src = "https://via.placeholder.com/150";
-//   element.style.position = "absolute";
-//   element.style.zIndex = 0
-//   element.style.top = (Math.floor(Math.random() * 21) - 10) + "em";
-//   element.style.left = (Math.floor(Math.random() * 21) - 10) + "em";
-// })
 </script>

@@ -73,8 +73,8 @@ end
     </div>
     <div style="min-width: 49vw"> <%# columna dreta (imatges)%>
       <div>
-        <div class="project-show image-container project-show-main-image-container" style="background: url() left top no-repeat; background-position: center;">
-          <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "opacity: 0", class: "invisible-image project-show") %>
+        <div class="project-show image-container project-show-main-image-container" style=" background: url() left top no-repeat; background-position: center;">
+        <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "opacity: 0", class: "invisible-image project-show") %>
         </div>
         <div style="display: flex"> <%# imatges petites sota la gran%>
           <%@projects[0..-1].each_with_index do |project, index|%>
