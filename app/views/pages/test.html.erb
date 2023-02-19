@@ -9,24 +9,31 @@
   #pots-layout { padding-left: 20vw; max-width: 80vw; gap: 17vw;}
   .main-pot-image {position: relative; z-index: 2;}
   .main-pot-image, .secondary-pot-image {max-height: 12vh; max-width: 5vw;}
-  .secondary-pot-image-container { ;}
-  .secondary-pot-image {margin: auto; opacity: 1; position: absolute; z-index: 1 }
-  .backdrop {display: none}
+  .secondary-pot-image {position: absolute; z-index: 1}
+  .backdrop {display: none; position: fixed;}
   body {margin: 0px;  font-family: PT Mono;}
-
-  @media (max-width: 900px) {
-    #pots-layout {margin-left: 0; margin: auto; width: 100vw; gap: 20vw}
-    .main-pot-image, .secondary-pot-image {max-height: 25vh; max-width: 8vw;}
-  }
+  .testclass {background-size: contain}
 </style>
+
+
+
+
+
+
 
 
 <style>
   .image-container {
-  box-shadow: 10px 10px 10px 0 white inset, -10px -10px 10px 0 white inset;
+  box-shadow: 10px 10px 8px 0 white inset, -10px -10px 8px 0 white inset, 10px 10px 25px 0 white, -10px -10px 25px 0 white;
   border: 1px solid white;}
 </style>
 
+<style>
+::-webkit-scrollbar {
+  display: none;
+}
+
+</style>
 
 <%#mètode per a obtenir array de fitxers dona't un directori%>
 <%
@@ -45,8 +52,8 @@ end
   <div id="<%=project[:name]%>" style="position: relative; width: fit-content; text-align: center">
     <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
-          <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
-          <a class="project-button project-show" style="max-width: 8vw; background-color: transparent; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
+          <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name].gsub('-', ' ')%></div>
+          <a data-projectshow="<%=@projects[index][:name].gsub(' ', '-')%>" class="project-button project-show" style="max-width: 8vw; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name].gsub('-', ' ')%></a>
         </div>
     <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
     <%= image_tag(route, style: "display: none; position: relative; z-index: 3", "data-project": project[:name] )%>
@@ -58,26 +65,26 @@ end
 
 <div style="">
   <div style="min-width: 15em; position: fixed; z-index: 4;"><h1 style="margin: 0; font-size: 3vw;">Laura Elias</h1></div>
-  <div class ="backdrop" style="position: fixed; backdrop-filter: blur(6px); width: 100%; min-height: 100%; z-index: 2"></div>
-  <div class ="backdrop" style="position: fixed; width: 100%; min-height: 100%; z-index: 2; background-color: white; opacity: 0.85"></div>
-  <div class="backdrop" style="position: fixed; overflow-y: scroll; overflow-x: hidden; background-color: transparent; min-height: 100%; min-width: 100%; z-index: 3;">
+  <div class ="backdrop" style="backdrop-filter: blur(6px); width: 100%; min-height: 100%; z-index: 2"></div>
+  <div class ="backdrop" style="width: 100%; min-height: 100%; z-index: 2; background-color: white; opacity: 0.85"></div>
+  <div class="backdrop" style="overflow-y: scroll; overflow-x: hidden; background-color: transparent; min-height: 100%; min-width: 100%; z-index: 3;">
 
-    <div style="position: absolute; display: flex; align-items: center; overflow-y: scroll"> <%# flex amb les dues columnes%>
+    <div style="position: absolute; display: grid; grid-template-columns: 50vw 50vw; align-items: center; overflow-y: scroll"> <%# flex amb les dues columnes%>
       <div style = "height: fit-content; min-width: 50vw;"> <%# columna esquerra (text)%>
       <%@projects[0..-1].each_with_index do |project, index|%>
-      <div style="position: absolute; max-width: 50vw">
-        <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name]%></h2>
-        <p class="project-show project-hide element-<%=project[:name]%>" style="display: none;"><%=@projects[index][:content]%></p>
+      <div style="max-width: 50vw; margin: 2vw">
+        <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name].gsub('-', ' ')%></h2>
+        <p class="project-show project-hide element-<%=project[:name]%>" style="display: none; "><%=@projects[index][:content]%></p>
       </div>
       <%end%>
       </div>
-      <div style="min-width: 50vw"> <%# columna dreta (imatges)%>
-        <div style="background-color: whitesmoke; min-height: 80vh; max-height: 80vh; max-width: 50vw; display: flex; align-items: center">
-          <div class="project-show image-container project-show-main-image-container" style="max-height: inherit; max-width: inherit; background: url() left top no-repeat; background-position: contain;">
+      <div style=""> <%# columna dreta (imatges)%>
+        <div style="background-color: whitesmoke; min-height: 80vh; max-height: 80vh; max-width: 49vw; display: flex; align-items: center">
+          <div class="testclass project-show image-container project-show-main-image-container" style="width: fit-content; margin: auto; background-size: cover; max-height: inherit; max-width: inherit; background: url() left top no-repeat; ">
           <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "max-height: inherit; opacity: 0", class: "invisible-image project-show") %>
           </div>
         </div>
-          <div style="display: flex; flex-wrap: wrap; max-width: inherit"> <%# imatges petites sota la gran%>
+          <div style="display: flex; flex-wrap: wrap; max-width: inherit; width: fit-content; margin: auto; max-width: 45vw"> <%# imatges petites sota la gran%>
             <%@projects[0..-1].each_with_index do |project, index|%>
             <%JSON.parse(@projects[index][:showpage_images])[0..-1].each_with_index do |image, index|%>
             <div class="project-show project-hide element-<%=project[:name]%> image-container project-show-small-image small-image-<%=project[:name]%>"
@@ -107,29 +114,35 @@ end
 
 
 <script>
-const buttons = document.querySelectorAll(".project-button")
+//funció per a extreure URL d'un 'background' property
+function backgroundValueToURL(backgroundValue) {
+  const matches = backgroundValue.match(/url\(["']?([^"']*)["']?\)/);
+  return matches ? matches[1] : null;
+}
+
+
+//afegir dataset-project al button, amb el nom del projecte en guions; canviar el ${button.textContent} per button.dataset
+
+const buttons = document.querySelectorAll(".project-button") //botons de projecte al homepage
 buttons.forEach(button => {
   button.addEventListener('click', () => {
-    console.log("clicked a project button")
-    projectElements = document.querySelectorAll(`.element-${button.textContent}`)
+    projectElements = document.querySelectorAll(`.element-${button.dataset.projectshow}`)
     projectElements.forEach(function(element) {
       element.style.display = "block"
     }
     )
-
-    firstImage = document.querySelector(`.small-image-${button.textContent}`)
-    url = firstImage.style.background.split(" ")[0].substring(5, firstImage.style.background.split(" ")[0].length - 2)
-
+    firstImage = document.querySelector(`.small-image-${button.dataset.projectshow}`)
+    url = backgroundValueToURL(firstImage.style.background)
     var invisibleImage = document.querySelector(".invisible-image");
     var projectShowMainImage = document.querySelector(".project-show-main-image-container");
 
     invisibleImage.src = url;
     projectShowMainImage.style.background = `url(${url}) center center no-repeat`
 
-    invisibleImage.addEventListener('load', function() {
-      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
-      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
-    });
+   // invisibleImage.addEventListener('load', function() {
+     // projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+     // projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+  //  });
   });
 });
 </script>
@@ -148,7 +161,7 @@ var invisibleImage = document.querySelector(".invisible-image");
 function changeMainImageSize(event) {
   const clickedObject = event.target;
   if (clickedObject.classList.contains('project-show-small-image')){
-    targetURL = clickedObject.style.background.split(" ")[0].substring(5, clickedObject.style.background.split(" ")[0].length - 2)
+    targetURL = backgroundValueToURL(clickedObject.style.background)
     invisibleImage.src = targetURL;
     invisibleImage.addEventListener('load', function() {
       projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
