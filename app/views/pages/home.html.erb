@@ -12,6 +12,7 @@
   .secondary-pot-image {position: absolute; z-index: 1}
   .backdrop {display: none; position: fixed;}
   body {margin: 0px;  font-family: PT Mono;}
+  .testclass {background-size: contain}
 </style>
 
 
@@ -34,7 +35,7 @@
 
 </style>
 
-<%#mètode per a obtenir array de fitxers dona't un directori%>
+<%#mètode per a obtenir array de fitxers donat un directori%>
 <%
 def dir_to_array(string, prefix = "")
   array = []
@@ -51,8 +52,8 @@ end
   <div id="<%=project[:name]%>" style="position: relative; width: fit-content; text-align: center">
     <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
-          <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name]%></div>
-          <a data-project-show="<%project[:name].gsub(" ", "-")%>" class="project-button project-show" style="max-width: 8vw; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name]%></a>
+          <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name].gsub('-', ' ')%></div>
+          <a data-projectshow="<%=@projects[index][:name].gsub(' ', '-')%>" class="project-button project-show" style="max-width: 8vw; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name].gsub('-', ' ')%></a>
         </div>
     <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
     <%= image_tag(route, style: "display: none; position: relative; z-index: 3", "data-project": project[:name] )%>
@@ -72,14 +73,14 @@ end
       <div style = "height: fit-content; min-width: 50vw;"> <%# columna esquerra (text)%>
       <%@projects[0..-1].each_with_index do |project, index|%>
       <div style="max-width: 50vw; margin: 2vw">
-        <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name]%></h2>
+        <h2 class="project-show project-hide element-<%=project[:name]%>" style="display: none"><%=@projects[index][:name].gsub('-', ' ')%></h2>
         <p class="project-show project-hide element-<%=project[:name]%>" style="display: none; "><%=@projects[index][:content]%></p>
       </div>
       <%end%>
       </div>
       <div style=""> <%# columna dreta (imatges)%>
         <div style="background-color: whitesmoke; min-height: 80vh; max-height: 80vh; max-width: 49vw; display: flex; align-items: center">
-          <div id="testid" class="project-show image-container project-show-main-image-container" style="width: fit-content; margin: auto; background-size: cover; max-height: inherit; max-width: inherit; background: url() left top no-repeat; ">
+          <div class="testclass project-show image-container project-show-main-image-container" style="width: fit-content; margin: auto; background-size: cover; max-height: inherit; max-width: inherit; background: url() left top no-repeat; ">
           <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "max-height: inherit; opacity: 0", class: "invisible-image project-show") %>
           </div>
         </div>
@@ -120,15 +121,17 @@ function backgroundValueToURL(backgroundValue) {
 }
 
 
+//afegir dataset-project al button, amb el nom del projecte en guions; canviar el ${button.textContent} per button.dataset
+
 const buttons = document.querySelectorAll(".project-button") //botons de projecte al homepage
 buttons.forEach(button => {
   button.addEventListener('click', () => {
-    projectElements = document.querySelectorAll(`.element-${button.textContent}`) // projecte1 => 'element-projecte1', projecte 2 => 'element-projecte 2'
+    projectElements = document.querySelectorAll(`.element-${button.dataset.projectshow}`)
     projectElements.forEach(function(element) {
       element.style.display = "block"
     }
     )
-    firstImage = document.querySelector(`.small-image-${button.textContent}`)
+    firstImage = document.querySelector(`.small-image-${button.dataset.projectshow}`)
     url = backgroundValueToURL(firstImage.style.background)
     var invisibleImage = document.querySelector(".invisible-image");
     var projectShowMainImage = document.querySelector(".project-show-main-image-container");
@@ -136,10 +139,10 @@ buttons.forEach(button => {
     invisibleImage.src = url;
     projectShowMainImage.style.background = `url(${url}) center center no-repeat`
 
-    invisibleImage.addEventListener('load', function() {
-      projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
-      projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
-    });
+   // invisibleImage.addEventListener('load', function() {
+     // projectShowMainImage.style.width = invisibleImage.naturalWidth + "px"
+     // projectShowMainImage.style.height = invisibleImage.naturalHeight + "px"
+  //  });
   });
 });
 </script>
