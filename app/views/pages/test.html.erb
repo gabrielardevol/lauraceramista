@@ -50,12 +50,15 @@ end
 <div id="pots-layout" style="display: flex; gap: 16vw; row-gap: 30vh;  flex-wrap: wrap; position: absolute; overflow: hidden; min-height: 100vh">
   <%@projects[0..-1].each_with_index do |project, index|%>
   <div id="<%=project[:name]%>" style="position: relative; width: fit-content; text-align: center">
-    <%= image_tag(JSON.parse(@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images": JSON.parse(@projects[index][:homepage_images]), "data-index": 2)%>
+    <%# <%= image_tag( (@projects[index][:homepage_images])[0], "data-project": project[:name] , class: "main-pot-image target", "data-images":  (@projects[index][:homepage_images]), "data-index": 2)%>
+    <%= image_tag((@projects[index][:homepage_images][0]).to_s, "data-project": project[:name] , class: "main-pot-image target",
+    "data-images": (@projects[index][:homepage_images]), "data-index": 2)%>
+
         <div style="display: flex; justify-content: center; align-items: center; padding: 5px;">
           <div style="max-width: 8vw; padding: 0em 1em; border-radius: 50px; background-color: white; position: absolute; z-index: 2;  color: transparent; filter: blur(5px); text-align: center"><%=project[:name].gsub('-', ' ')%></div>
           <a data-projectshow="<%=@projects[index][:name].gsub(' ', '-')%>" class="project-button project-show" style="max-width: 8vw; position: relative; z-index: 2; font-size: 0.9em; color: purple; text-decoration: underline purple"><%=project[:name].gsub('-', ' ')%></a>
         </div>
-    <%JSON.parse(@projects[index][:homepage_images]).each_with_index do |route, index|%>
+    <%(@projects[index][:homepage_images]).each_with_index do |route, index|%>
     <%= image_tag(route, style: "display: none; position: relative; z-index: 3", "data-project": project[:name] )%>
     <%end%>
   </div>
@@ -81,12 +84,12 @@ end
       <div style=""> <%# columna dreta (imatges)%>
         <div style="background-color: whitesmoke; min-height: 80vh; max-height: 80vh; max-width: 49vw; display: flex; align-items: center">
           <div class="testclass project-show image-container project-show-main-image-container" style="width: fit-content; margin: auto; background-size: cover; max-height: inherit; max-width: inherit; background: url() left top no-repeat; ">
-          <%= image_tag(JSON.parse(@projects[0][:showpage_images])[0], style: "max-height: inherit; opacity: 0", class: "invisible-image project-show") %>
+          <%= image_tag( (@projects[0][:showpage_images])[0], style: "max-height: inherit; opacity: 0", class: "invisible-image project-show") %>
           </div>
         </div>
           <div style="display: flex; flex-wrap: wrap; max-width: inherit; width: fit-content; margin: auto; max-width: 45vw"> <%# imatges petites sota la gran%>
             <%@projects[0..-1].each_with_index do |project, index|%>
-            <%JSON.parse(@projects[index][:showpage_images])[0..-1].each_with_index do |image, index|%>
+            <% (@projects[index][:showpage_images])[0..-1].each_with_index do |image, index|%>
             <div class="project-show project-hide element-<%=project[:name]%> image-container project-show-small-image small-image-<%=project[:name]%>"
               style="background: url(<%=image_path(image)%>) left top no-repeat; background-position: center; background-size: 100px;
               width: <%=80/16%>em;
